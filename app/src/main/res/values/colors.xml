@@ -10,4 +10,6 @@
     <color name="textTertiary">#FFBDBDBD</color>
     <color name="white">#FFFFFFFF</color>
     <color name="black">#FF000000</color>
+    <color name="ic_launcher_background">#FF6200EE</color>
 </resources>
+
