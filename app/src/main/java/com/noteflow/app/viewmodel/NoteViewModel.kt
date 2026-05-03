@@ -13,7 +13,7 @@ import com.noteflow.app.repository.NoteRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class NoteViewModel(application: Application) : AndroidViewModel() {
+class NoteViewModel(application: Application) : AndroidViewModel(application) {
     
     private val repository: NoteRepository
     
@@ -33,7 +33,12 @@ class NoteViewModel(application: Application) : AndroidViewModel() {
     
     init {
         val database = NoteDatabase.getDatabase(application)
-        repository = NoteRepository(database)
+        repository = NoteRepository(
+            noteDao = database.noteDao(),
+            tagDao = database.tagDao(),
+            folderDao = database.folderDao(),
+            templateDao = database.templateDao()
+        )
         
         // 初始化 LiveData
         allNotes = repository.allNotes
@@ -67,7 +72,7 @@ class NoteViewModel(application: Application) : AndroidViewModel() {
     }
     
     fun getUncategorizedNotes(): LiveData<List<Note>> {
-        return repository.getUncategorizedNotes()
+        return repository.uncategorizedNotes
     }
     
     suspend fun getNoteById(noteId: Long): Note? {
@@ -83,7 +88,7 @@ class NoteViewModel(application: Application) : AndroidViewModel() {
     }
     
     fun moveToFolder(noteId: Long, folderId: Long?) = viewModelScope.launch(Dispatchers.IO) {
-        repository.moveToFolder(noteId, folderId)
+        repository.moveNoteToFolder(noteId, folderId)
     }
     
     // ========== 文件夹操作 ==========
