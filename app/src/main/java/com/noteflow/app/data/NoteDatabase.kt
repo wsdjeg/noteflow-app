@@ -4,12 +4,25 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.noteflow.app.model.Note
+import com.noteflow.app.model.*
 
-@Database(entities = [Note::class], version = 1, exportSchema = false)
+@Database(
+    entities = [
+        Note::class,
+        Folder::class,
+        Tag::class,
+        NoteTag::class,
+        Template::class
+    ],
+    version = 2,
+    exportSchema = false
+)
 abstract class NoteDatabase : RoomDatabase() {
     
     abstract fun noteDao(): NoteDao
+    abstract fun folderDao(): FolderDao
+    abstract fun tagDao(): TagDao
+    abstract fun templateDao(): TemplateDao
     
     companion object {
         @Volatile
