@@ -31,8 +31,7 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
-        with:
-          gradle-version: "8.2"
+
       - name: Generate debug keystore
         run: |
           mkdir -p ~/.android
@@ -44,7 +43,7 @@ jobs:
             -dname "CN=Android Debug,O=Android,C=US"
 
       - name: Build Debug APK
-        run: gradle assembleDebug --no-daemon --stacktrace
+        run: ./gradlew :app:assembleDebug --no-daemon --stacktrace --info --console=plain
 
       - name: Get version info
         id: version
