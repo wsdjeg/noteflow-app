@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.noteflow.app.R
 import com.noteflow.app.databinding.ItemNoteBinding
 import com.noteflow.app.model.Note
 import java.text.SimpleDateFormat
@@ -46,7 +47,15 @@ class NoteAdapter(
                 textContent.text = note.content
                 
                 val dateFormat = SimpleDateFormat("MM/dd HH:mm", Locale.getDefault())
-                textTimestamp.text = dateFormat.format(Date(note.timestamp))
+                textTimestamp.text = dateFormat.format(Date(note.updatedAt))
+                
+                // 显示收藏图标
+                if (note.isFavorite) {
+                    imageFavorite.setImageResource(R.drawable.ic_favorite_filled)
+                    imageFavorite.visibility = android.view.View.VISIBLE
+                } else {
+                    imageFavorite.visibility = android.view.View.GONE
+                }
                 
                 // 设置内容预览，最多显示2行
                 textContent.maxLines = 2

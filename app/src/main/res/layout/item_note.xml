@@ -16,16 +16,34 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <TextView
-            android:id="@+id/textTitle"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@color/textPrimary"
-            android:maxLines="1"
-            android:ellipsize="end"
-            tools:text="笔记标题" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/textTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/textPrimary"
+                android:maxLines="1"
+                android:ellipsize="end"
+                tools:text="笔记标题" />
+
+            <ImageView
+                android:id="@+id/imageFavorite"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_favorite_filled"
+                android:visibility="gone"
+                android:contentDescription="收藏"
+                app:tint="@color/accent" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/textContent"
