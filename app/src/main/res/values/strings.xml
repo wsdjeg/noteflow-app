@@ -5,6 +5,7 @@
     <string name="action_save">保存</string>
     <string name="action_cancel">取消</string>
     <string name="action_search">搜索</string>
+    <string name="action_favorite">收藏</string>
     <string name="hint_title">标题</string>
     <string name="hint_content">开始记录...</string>
     <string name="search_hint">搜索笔记...</string>
@@ -16,4 +17,6 @@
     <string name="note_updated">笔记已更新</string>
     <string name="note_deleted">笔记已删除</string>
     <string name="last_edited">最后编辑: %s</string>
+    <string name="favorite_added">已添加到收藏</string>
+    <string name="favorite_removed">已取消收藏</string>
 </resources>

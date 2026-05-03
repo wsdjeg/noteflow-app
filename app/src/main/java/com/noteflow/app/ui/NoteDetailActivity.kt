@@ -7,10 +7,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.noteflow.app.R
 import com.noteflow.app.databinding.ActivityNoteDetailBinding
 import com.noteflow.app.model.Note
 import com.noteflow.app.viewmodel.NoteViewModel
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -19,7 +21,9 @@ class NoteDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNoteDetailBinding
     private lateinit var noteViewModel: NoteViewModel
     private var noteId: Long = -1
-    private var isEditing = false
+    private var isFavorite: Boolean = false
+    private var isLocked: Boolean = false
+    private var folderId: Long? = null
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,13 +49,19 @@ class NoteDetailActivity : AppCompatActivity() {
         if (noteId != -1L) {
             val title = intent.getStringExtra("note_title") ?: ""
             val content = intent.getStringExtra("note_content") ?: ""
-            val timestamp = intent.getLongExtra("note_timestamp", System.currentTimeMillis())
+            val createdAt = intent.getLongExtra("note_created_at", System.currentTimeMillis())
+            val updatedAt = intent.getLongExtra("note_updated_at", createdAt)
+            isFavorite = intent.getBooleanExtra("note_is_favorite", false)
+            isLocked = intent.getBooleanExtra("note_is_locked", false)
+            folderId = if (intent.hasExtra("note_folder_id")) {
+                intent.getLongExtra("note_folder_id", -1).takeIf { it != -1L }
+            } else null
             
             binding.editTitle.setText(title)
             binding.editContent.setText(content)
             
             val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
-            binding.textTimestamp.text = "最后编辑: ${dateFormat.format(Date(timestamp))}"
+            binding.textTimestamp.text = "最后编辑: ${dateFormat.format(Date(updatedAt))}"
             binding.textTimestamp.visibility = android.view.View.VISIBLE
         } else {
             binding.textTimestamp.visibility = android.view.View.GONE
@@ -73,12 +83,32 @@ class NoteDetailActivity : AppCompatActivity() {
             return
         }
         
-        val note = Note(
-            id = if (noteId == -1L) 0 else noteId,
-            title = title,
-            content = content,
-            timestamp = System.currentTimeMillis()
-        )
+        val currentTime = System.currentTimeMillis()
+        
+        val note = if (noteId == -1L) {
+            // 新建笔记
+            Note(
+                title = title,
+                content = content,
+                createdAt = currentTime,
+                updatedAt = currentTime,
+                isFavorite = false,
+                isLocked = false,
+                folderId = null
+            )
+        } else {
+            // 更新笔记
+            Note(
+                id = noteId,
+                title = title,
+                content = content,
+                createdAt = intent.getLongExtra("note_created_at", currentTime),
+                updatedAt = currentTime,
+                isFavorite = isFavorite,
+                isLocked = isLocked,
+                folderId = folderId
+            )
+        }
         
         if (noteId == -1L) {
             noteViewModel.insert(note)
@@ -94,6 +124,13 @@ class NoteDetailActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         if (noteId != -1L) {
             menuInflater.inflate(R.menu.menu_note_detail, menu)
+            
+            // 更新收藏图标状态
+            val favoriteItem = menu.findItem(R.id.action_favorite)
+            favoriteItem?.setIcon(
+                if (isFavorite) R.drawable.ic_favorite_filled
+                else R.drawable.ic_favorite_outline
+            )
         }
         return true
     }
@@ -108,8 +145,26 @@ class NoteDetailActivity : AppCompatActivity() {
                 showDeleteConfirmation()
                 true
             }
+            R.id.action_favorite -> {
+                toggleFavorite()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+    
+    private fun toggleFavorite() {
+        isFavorite = !isFavorite
+        noteViewModel.toggleFavorite(noteId, isFavorite)
+        
+        // 更新菜单图标
+        invalidateOptionsMenu()
+        
+        Toast.makeText(
+            this,
+            if (isFavorite) "已添加到收藏" else "已取消收藏",
+            Toast.LENGTH_SHORT
+        ).show()
     }
     
     private fun showDeleteConfirmation() {
@@ -124,11 +179,18 @@ class NoteDetailActivity : AppCompatActivity() {
     }
     
     private fun deleteNote() {
+        val currentTime = System.currentTimeMillis()
+        val createdAt = intent.getLongExtra("note_created_at", currentTime)
+        
         val note = Note(
             id = noteId,
             title = binding.editTitle.text.toString(),
             content = binding.editContent.text.toString(),
-            timestamp = intent.getLongExtra("note_timestamp", System.currentTimeMillis())
+            createdAt = createdAt,
+            updatedAt = currentTime,
+            isFavorite = isFavorite,
+            isLocked = isLocked,
+            folderId = folderId
         )
         
         noteViewModel.delete(note)
