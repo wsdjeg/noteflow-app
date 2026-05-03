@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">NoteFlow</string>
+    <string name="action_settings">设置</string>
+    <string name="action_delete">删除</string>
+    <string name="action_save">保存</string>
+    <string name="action_cancel">取消</string>
+    <string name="hint_title">标题</string>
+    <string name="hint_content">开始记录...</string>
+    <string name="empty_state_title">暂无笔记</string>
+    <string name="empty_state_subtitle">点击下方按钮创建第一条笔记</string>
+    <string name="delete_confirmation_title">删除笔记</string>
+    <string name="delete_confirmation_message">确定要删除这条笔记吗？此操作不可撤销。</string>
+    <string name="note_saved">笔记已保存</string>
+    <string name="note_updated">笔记已更新</string>
+    <string name="note_deleted">笔记已删除</string>
+    <string name="last_edited">最后编辑: %s</string>
+</resources>
