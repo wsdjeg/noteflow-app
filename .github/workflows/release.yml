@@ -104,6 +104,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: prerelease
+          target_commitish: ${{ github.sha }}
           name: PreRelease v${{ needs.build.outputs.version_name }}
           body: |
             **版本**: ${{ needs.build.outputs.version_name }}
@@ -156,6 +157,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: v${{ needs.build.outputs.version_name }}
+          target_commitish: ${{ github.sha }}
           name: Release v${{ needs.build.outputs.version_name }}
           body: |
             **版本**: ${{ needs.build.outputs.version_name }} (Build ${{ needs.build.outputs.version_code }})
@@ -167,4 +169,3 @@ jobs:
           files: ./apk/NoteFlow-v${{ needs.build.outputs.version_name }}.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
