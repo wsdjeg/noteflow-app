@@ -25,5 +25,6 @@ data class Note(
     val folderId: Long? = null,           // 所属文件夹ID
     val isFavorite: Boolean = false,       // 是否收藏
     val isLocked: Boolean = false,         // 是否锁定
-    val timestamp: Long = System.currentTimeMillis()
+    val createdAt: Long = System.currentTimeMillis(),
+    val updatedAt: Long = System.currentTimeMillis()
 )

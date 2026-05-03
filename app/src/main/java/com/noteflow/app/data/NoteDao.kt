@@ -7,8 +7,8 @@ import com.noteflow.app.model.Note
 @Dao
 interface NoteDao {
     
-    // 获取所有笔记（按时间倒序）
-    @Query("SELECT * FROM notes ORDER BY timestamp DESC")
+    // 获取所有笔记（按更新时间倒序）
+    @Query("SELECT * FROM notes ORDER BY updatedAt DESC")
     fun getAllNotes(): LiveData<List<Note>>
     
     // 根据ID获取笔记
@@ -32,25 +32,25 @@ interface NoteDao {
     suspend fun deleteAllNotes()
     
     // 搜索笔记（标题或内容）
-    @Query("SELECT * FROM notes WHERE title LIKE '%' || :query || '%' OR content LIKE '%' || :query || '%' ORDER BY timestamp DESC")
+    @Query("SELECT * FROM notes WHERE title LIKE '%' || :query || '%' OR content LIKE '%' || :query || '%' ORDER BY updatedAt DESC")
     fun searchNotes(query: String): LiveData<List<Note>>
     
     // ========== 新增查询方法 ==========
     
     // 获取文件夹内的笔记
-    @Query("SELECT * FROM notes WHERE folderId = :folderId ORDER BY timestamp DESC")
+    @Query("SELECT * FROM notes WHERE folderId = :folderId ORDER BY updatedAt DESC")
     fun getNotesByFolder(folderId: Long): LiveData<List<Note>>
     
     // 获取未分类的笔记（没有文件夹）
-    @Query("SELECT * FROM notes WHERE folderId IS NULL ORDER BY timestamp DESC")
+    @Query("SELECT * FROM notes WHERE folderId IS NULL ORDER BY updatedAt DESC")
     fun getUncategorizedNotes(): LiveData<List<Note>>
     
     // 获取收藏的笔记
-    @Query("SELECT * FROM notes WHERE isFavorite = 1 ORDER BY timestamp DESC")
+    @Query("SELECT * FROM notes WHERE isFavorite = 1 ORDER BY updatedAt DESC")
     fun getFavoriteNotes(): LiveData<List<Note>>
     
     // 获取锁定的笔记
-    @Query("SELECT * FROM notes WHERE isLocked = 1 ORDER BY timestamp DESC")
+    @Query("SELECT * FROM notes WHERE isLocked = 1 ORDER BY updatedAt DESC")
     fun getLockedNotes(): LiveData<List<Note>>
     
     // 更新收藏状态

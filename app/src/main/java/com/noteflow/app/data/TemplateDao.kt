@@ -33,18 +33,15 @@ interface TemplateDao {
     
     // 获取默认模板
     @Query("SELECT * FROM templates WHERE isDefault = 1 LIMIT 1")
-    suspend fun getDefaultTemplate(): Template?
+    fun getDefaultTemplate(): LiveData<Template?>
     
-    // 设置默认模板
+    // 清除默认模板
     @Query("UPDATE templates SET isDefault = 0")
     suspend fun clearDefaultTemplate()
     
-    @Transaction
-    suspend fun setDefaultTemplate(templateId: Long) {
-        clearDefaultTemplate()
-        @Query("UPDATE templates SET isDefault = 1 WHERE id = :templateId")
-        suspend fun setDefault()
-    }
+    // 设置默认模板
+    @Query("UPDATE templates SET isDefault = 1 WHERE id = :templateId")
+    suspend fun setDefaultTemplate(templateId: Long)
     
     // 检查模板名是否存在
     @Query("SELECT * FROM templates WHERE name = :name LIMIT 1")
