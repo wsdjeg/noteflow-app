@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout 
+<androidx.coordinatorlayout.widget.CoordinatorLayout 
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/background"
     tools:context=".ui.NoteDetailActivity">
 
@@ -24,73 +23,191 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <ScrollView
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout
+        <!-- 编辑模式 -->
+        <ScrollView
+            android:id="@+id/scrollViewEdit"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fillViewport="true">
 
-            <TextView
-                android:id="@+id/textTimestamp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="12sp"
-                android:textColor="@color/textTertiary"
-                android:layout_marginBottom="16dp"
-                android:visibility="gone"
-                tools:text="最后编辑: 2024-01-01 12:00" />
-
-            <com.google.android.material.textfield.TextInputLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="标题"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_marginBottom="16dp">
+                android:orientation="vertical">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTitle"
+                <!-- 时间戳 -->
+                <TextView
+                    android:id="@+id/textTimestamp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="16dp"
+                    android:textSize="12sp"
+                    android:textColor="@color/textTertiary"
+                    android:visibility="gone"
+                    tools:text="最后编辑: 2024-01-01 12:00" />
+
+                <!-- 浮窗卡片样式 -->
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textCapSentences"
-                    android:maxLines="1"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:layout_margin="16dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="2dp"
+                    app:cardBackgroundColor="@color/cardBackground">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
-            <com.google.android.material.textfield.TextInputLayout
+                        <!-- 标题输入 -->
+                        <EditText
+                            android:id="@+id/editTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:padding="24dp"
+                            android:paddingBottom="0dp"
+                            android:inputType="textCapSentences"
+                            android:maxLines="2"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/textPrimary"
+                            android:textColorHint="@color/textTertiary"
+                            android:hint="标题" />
+
+                        <!-- 分割线 -->
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginStart="24dp"
+                            android:layout_marginEnd="24dp"
+                            android:layout_marginTop="16dp"
+                            android:background="@color/divider" />
+
+                        <!-- 内容输入 -->
+                        <EditText
+                            android:id="@+id/editContent"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:minHeight="300dp"
+                            android:background="@null"
+                            android:padding="24dp"
+                            android:inputType="textMultiLine|textCapSentences"
+                            android:gravity="top"
+                            android:textSize="16sp"
+                            android:textColor="@color/textPrimary"
+                            android:textColorHint="@color/textTertiary"
+                            android:hint="开始记录...\n\n支持 Markdown 格式：\n- **粗体** *斜体*\n- # 标题\n- - 列表\n- [链接](url)\n- `代码`" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <!-- 预览模式 -->
+        <ScrollView
+            android:id="@+id/scrollViewPreview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:visibility="gone">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="开始记录..."
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+                android:orientation="vertical">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editContent"
+                <!-- 时间戳 -->
+                <TextView
+                    android:id="@+id/textTimestampPreview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="16dp"
+                    android:textSize="12sp"
+                    android:textColor="@color/textTertiary"
+                    android:visibility="gone"
+                    tools:text="最后编辑: 2024-01-01 12:00" />
+
+                <!-- 预览卡片 -->
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textMultiLine|textCapSentences"
-                    android:minLines="10"
-                    android:gravity="top"
-                    android:textSize="16sp" />
+                    android:layout_margin="16dp"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="2dp"
+                    app:cardBackgroundColor="@color/cardBackground">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="24dp">
 
-        </LinearLayout>
+                        <!-- 预览标题 -->
+                        <TextView
+                            android:id="@+id/textPreviewTitle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:textColor="@color/textPrimary"
+                            android:maxLines="2"
+                            android:ellipsize="end"
+                            android:visibility="gone"
+                            tools:text="笔记标题" />
 
-    </ScrollView>
+                        <!-- 分割线 -->
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:background="@color/divider" />
 
-    <com.google.android.material.button.MaterialButton
+                        <!-- 预览内容 -->
+                        <TextView
+                            android:id="@+id/textPreview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:textColor="@color/textPrimary"
+                            android:lineSpacingExtra="4dp"
+                            tools:text="这是 Markdown 渲染后的预览内容..." />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </FrameLayout>
+
+    <!-- 保存按钮浮窗 -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/buttonSave"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:text="保存笔记"
-        android:textSize="16sp"
-        app:backgroundTint="@color/accent" />
+        android:src="@drawable/ic_save"
+        android:contentDescription="保存笔记"
+        app:backgroundTint="@color/accent"
+        app:tint="@android:color/white" />
 
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
