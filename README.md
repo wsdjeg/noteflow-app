@@ -1,142 +1,135 @@
-# NoteFlow - 安卓记事本应用
+# NoteFlow - Android Note Taking App
 
-一个简洁、优雅的安卓记事本应用，采用现代Android开发技术构建。
+A simple and elegant Android note-taking application built with modern Android development practices.
 
-## 功能特性
+[![Build & Release](https://github.com/wsdjeg/noteflow-app/actions/workflows/release.yml/badge.svg)](https://github.com/wsdjeg/noteflow-app/actions/workflows/release.yml)
 
-- ✨ 创建、编辑、删除笔记
-- 📝 支持标题和内容编辑
-- 🔍 笔记搜索功能（即将推出）
-- 📱 Material Design 设计风格
-- 💾 本地数据持久化（Room数据库）
-- 🎨 简洁直观的用户界面
-- 📋 笔记列表和详情视图
-- 🕒 自动保存时间戳
+## ✨ Features
 
-## 技术栈
+- ✨ Create, edit, and delete notes
+- 📝 Title and content support
+- 📱 Material Design 3 UI
+- 💾 Local persistence with Room database
+- 🎨 Clean and intuitive interface
+- 🕒 Auto-save timestamps
 
-- **语言**: Kotlin
-- **架构**: MVVM (Model-View-ViewModel)
-- **数据库**: Room
-- **UI**: Material Design Components
-- **异步处理**: Kotlin Coroutines
-- **生命周期感知**: Android Jetpack Components
+## 📥 Download
 
-## 项目结构
+| Version | Status | Download |
+|---------|--------|----------|
+| **Stable** | ![Release](https://img.shields.io/github/v/release/wsdjeg/noteflow-app?include_prereleases) | [Latest Release](https://github.com/wsdjeg/noteflow-app/releases/latest) |
+| **Dev** | ![PreRelease](https://img.shields.io/badge/status-prerelease-orange) | [PreRelease APK](https://github.com/wsdjeg/noteflow-app/releases/prerelease) |
+
+> **Note**: PreRelease is automatically built on every push to master branch. It may contain unstable features.
+
+## 🛠 Tech Stack
+
+| Category | Technology |
+|----------|------------|
+| Language | Kotlin |
+| Architecture | MVVM |
+| Database | Room 2.6.1 |
+| UI | Material Design 1.11.0 |
+| Async | Kotlin Coroutines 1.7.3 |
+| Build | Gradle 8.2 |
+| Min SDK | 24 (Android 7.0) |
+| Target SDK | 34 (Android 14) |
+
+## 📁 Project Structure
 
 ```
-noteflow-app/
-├── app/
-│   ├── src/main/
-│   │   ├── java/com/noteflow/app/
-│   │   │   ├── adapter/          # RecyclerView适配器
-│   │   │   ├── data/             # 数据库相关
-│   │   │   ├── model/            # 数据模型
-│   │   │   ├── repository/       # 数据仓库
-│   │   │   ├── ui/               # 用户界面
-│   │   │   └── viewmodel/        # ViewModel
-│   │   ├── res/                  # 资源文件
-│   │   └── AndroidManifest.xml
-│   └── build.gradle
-├── gradle/
-├── .github/workflows/            # GitHub Actions
-├── build.gradle
-└── settings.gradle
+app/src/main/java/com/noteflow/app/
+├── adapter/           # RecyclerView adapters
+│   └── NoteAdapter.kt
+├── data/              # Database layer
+│   ├── NoteDao.kt
+│   └── NoteDatabase.kt
+├── model/             # Data models
+│   └── Note.kt
+├── repository/        # Data repository
+│   └── NoteRepository.kt
+├── ui/                # Activities
+│   ├── MainActivity.kt
+│   └── NoteDetailActivity.kt
+└── viewmodel/         # ViewModels
+    └── NoteViewModel.kt
 ```
 
-## 开发环境要求
+## 🚀 Getting Started
 
-- Android Studio Hedgehog | 2023.1.1 或更高版本
+### Prerequisites
+
+- Android Studio Hedgehog | 2023.1.1+
 - JDK 17
 - Android SDK 34
-- Gradle 8.2
 
-## 快速开始
+### Build & Run
 
-1. **克隆项目**
-   ```bash
-   git clone <your-repo-url>
-   cd noteflow-app
-   ```
-
-2. **在Android Studio中打开**
-   - 打开Android Studio
-   - 选择 "Open an existing project"
-   - 选择项目目录
-
-3. **构建项目**
-   ```bash
-   ./gradlew build
-   ```
-
-4. **运行应用**
-   - 连接Android设备或启动模拟器
-   - 点击运行按钮或执行：
-   ```bash
-   ./gradlew installDebug
-   ```
-
-## 构建变体
-
-- **Debug**: 调试版本，包含调试信息
-- **Release**: 发布版本，经过ProGuard优化
-
-## CI/CD
-
-项目使用GitHub Actions进行持续集成：
-
-- **CI**: 每次推送到main/develop分支或PR时运行测试和构建
-- **Release**: 创建发布版本时自动生成APK并发布到GitHub Releases
-
-## 测试
-
-运行单元测试：
 ```bash
-./gradlew test
+# Clone the repository
+git clone https://github.com/wsdjeg/noteflow-app.git
+cd noteflow-app
+
+# Build debug APK
+./gradlew assembleDebug
+
+# Install on device
+./gradlew installDebug
 ```
 
-运行Android仪器测试：
-```bash
-./gradlew connectedAndroidTest
+## 🔄 CI/CD Pipeline
+
+This project uses GitHub Actions for automated builds:
+
+| Trigger | Action |
+|---------|--------|
+| **Pull Request** | Build verification |
+| **Push to master** | Auto PreRelease APK |
+| **Tag (v\*)** | Official Release |
+
+### Release Workflow
+
+```
+master push → Build APK → Create/Update prerelease tag
+tag v*      → Build APK → Create Release with CHANGELOG
 ```
 
-## 代码规范
+## 📋 Roadmap
 
-- 遵循Kotlin编码规范
-- 使用ktlint进行代码格式化
-- 通过lint检查确保代码质量
+- [ ] Note search functionality
+- [ ] Categories/Tags
+- [ ] Markdown support
+- [ ] Export notes
+- [ ] Cloud sync
+- [ ] Dark mode
+- [ ] Note reminders
 
-## 待办事项
+## 🤝 Contributing
 
-- [ ] 添加笔记分类/标签功能
-- [ ] 实现笔记搜索
-- [ ] 支持Markdown格式
-- [ ] 添加笔记导出功能
-- [ ] 实现云同步
-- [ ] 支持深色模式
-- [ ] 添加笔记提醒功能
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'feat: add amazing feature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## 贡献指南
+### Commit Convention
 
-1. Fork 项目
-2. 创建功能分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 创建 Pull Request
+```
+feat:     New feature
+fix:      Bug fix
+docs:     Documentation
+style:    Code style
+refactor: Refactoring
+test:     Tests
+chore:    Build/tools
+```
 
-## 许可证
+## 📄 License
 
-本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情
+This project is licensed under the MIT License.
 
-## 联系方式
+## 🙏 Acknowledgments
 
-如有问题或建议，请通过以下方式联系：
-
-- 创建 Issue
-- 发送邮件至 [your-email@example.com]
-
-## 致谢
-
-- Android Jetpack 团队
-- Material Design 团队
-- Kotlin 团队
+- [Android Jetpack](https://developer.android.com/jetpack)
+- [Material Design](https://material.io/)
+- [Kotlin](https://kotlinlang.org/)
