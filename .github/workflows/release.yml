@@ -32,7 +32,7 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
         with:
-          gradle-version: "8.2"
+          gradle-version: "8.0"
 
       - name: Generate debug keystore
         run: |
@@ -45,7 +45,7 @@ jobs:
             -dname "CN=Android Debug,O=Android,C=US"
 
       - name: Build Debug APK
-        run: gradle assembleDebug --no-daemon --stacktrace --info --console=plain
+        run: gradle assembleDebug --no-daemon --stacktrace
 
       - name: Get version info
         id: version
@@ -104,7 +104,6 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: prerelease
-          target_commitish: ${{ github.sha }}
           name: PreRelease v${{ needs.build.outputs.version_name }}
           body: |
             **版本**: ${{ needs.build.outputs.version_name }}
@@ -157,7 +156,6 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: v${{ needs.build.outputs.version_name }}
-          target_commitish: ${{ github.sha }}
           name: Release v${{ needs.build.outputs.version_name }}
           body: |
             **版本**: ${{ needs.build.outputs.version_name }} (Build ${{ needs.build.outputs.version_code }})
